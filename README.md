@@ -4,6 +4,7 @@
 - Python 3
 - pip
 - virtualenv
+- [CICIDS 2017 Dataset](https://www.unb.ca/cic/datasets/ids-2017.html)
 
 
 ## Installation
