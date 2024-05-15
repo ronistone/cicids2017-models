@@ -1,0 +1,7 @@
+cicids2017/
+cicids2017-original/
+venv/
+
+
+__pycache__/
+.idea/
