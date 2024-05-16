@@ -1,6 +1,8 @@
 import pandas as pd
+import numpy as np
 from sklearn.metrics import classification_report
-from sklearn.metrics import confusion_matrix, f1_score
+from sklearn.metrics import confusion_matrix, f1_score, ConfusionMatrixDisplay
+import matplotlib.pyplot as plt
 
 
 def show_results(y_test, predictions):
@@ -16,10 +18,13 @@ def show_results(y_test, predictions):
     print("f1 is: ", f1_value)
     print("hit hate is: ", hit_rate)
 
-    report = classification_report(y_test, predictions, target_names=['BENIGN', 'ATTACK'], digits=5)
+    labels = ['BENIGN', 'ATTACK']
+    report = classification_report(y_test, predictions, target_names=labels, digits=5)
     print("Relatório de classificação:")
     print(report)
     mat_conf = confusion_matrix(y_test, predictions)
     print("Matriz de confusão:")
     print(mat_conf)
+    ConfusionMatrixDisplay(mat_conf, display_labels=labels).plot()
+    plt.show()
     return pd.DataFrame({'Actual': y_test, 'Predicted': predictions})

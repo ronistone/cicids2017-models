@@ -3,6 +3,7 @@ import glob
 import pandas as pd
 
 from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import LabelEncoder
 
 
 def get_dataset(path='cicids2017-original/TrafficLabelling', test_size=0.5):
@@ -10,11 +11,12 @@ def get_dataset(path='cicids2017-original/TrafficLabelling', test_size=0.5):
     # path = 'cicids2017-original/TrafficLabelling'
     all_files = glob.glob(os.path.join(path, "*.csv"))
     print(all_files)
-    df = pd.concat((pd.read_csv(f) for f in all_files[:3]), ignore_index=True)
+    df = pd.concat((pd.read_csv(f) for f in all_files), ignore_index=True)
 
     print(df.size)
 
     df[' Label'] = df[' Label'].apply(lambda x: 0 if x == 'BENIGN' else 1)
+    # df[' Label'] = LabelEncoder().fit_transform(df[' Label'])
 
     Target = ' Label'
     # webattack_features = ['Average Packet Size', 'Flow Bytes/s', 'Max Packet Length', 'Packet Length Mean',
@@ -34,13 +36,11 @@ def get_dataset(path='cicids2017-original/TrafficLabelling', test_size=0.5):
 
     y = df[Target]
 
-
     # imputer = SimpleImputer(strategy='mean')
     # X = imputer.fit_transform(X)
 
     # transformer = IncrementalPCA(n_components=70, batch_size=10000)
     # X = transformer.fit_transform(X)
     # print(X.shape)
-
 
     return train_test_split(X, y, test_size=test_size)
