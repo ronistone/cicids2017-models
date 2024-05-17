@@ -5,7 +5,7 @@ from sklearn.metrics import confusion_matrix, f1_score, ConfusionMatrixDisplay
 import matplotlib.pyplot as plt
 
 
-def show_results(y_test, predictions):
+def show_results(y_test, predictions, model=None):
     miss = 0
     for predict, result in zip(predictions, y_test):
         if predict != result:
@@ -23,8 +23,12 @@ def show_results(y_test, predictions):
     print("Relatório de classificação:")
     print(report)
     mat_conf = confusion_matrix(y_test, predictions)
-    print("Matriz de confusão:")
+
+    title = f"Confusion Matrix {model if model else ''}:"
+    print(title)
     print(mat_conf)
-    ConfusionMatrixDisplay(mat_conf, display_labels=labels).plot()
+    ConfusionMatrixDisplay(mat_conf, display_labels=labels).plot(values_format='d', cmap='Blues')
+
+    plt.title(title)
     plt.show()
-    return pd.DataFrame({'Actual': y_test, 'Predicted': predictions})
+    return report

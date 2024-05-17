@@ -1,3 +1,5 @@
+import time
+
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.neighbors import KNeighborsClassifier
 
@@ -45,15 +47,23 @@ if __name__ == '__main__':
     path = 'cicids2017/'
     x_train, x_test, y_train, y_test = get_dataset(path, test_size=0.8)
 
-    # plot_data(x_train, y_train)
+    forestStart = time.time()
 
     model = models['RandomForest']
     model.fit(x_train, y_train)
     predictions = model.predict(x_test)
 
-    show_results(y_test, predictions)
+    forestDuration = time.time() - forestStart
 
-# feature_importance = pd.DataFrame(
-#   model.feature_importances_, index=x_columns, columns=['importance']
-#   ).sort_values('importance', ascending=False)
-# print(feature_importance[:60])
+    knnStart = time.time()
+
+    knnModel = models['KNN']
+    knnModel.fit(x_train, y_train)
+    predictionsKnn = knnModel.predict(x_test)
+
+    knnDuration = time.time() - knnStart
+
+    show_results(y_test, predictions, 'RandomForest')
+    print('RandomForest duration:  {:.2f} seconds'.format(forestDuration))
+    show_results(y_test, predictionsKnn, 'KNN')
+    print('KNN duration: {:.2f} seconds'.format(knnDuration))
